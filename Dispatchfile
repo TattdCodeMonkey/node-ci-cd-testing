@@ -44,5 +44,11 @@ actions: [
   {
     tasks: ["test"]
     on pull_request: {}
+  },
+  {
+    tasks: ["test"]
+    on pull_request: {
+      chatops: ["test"]
+    }
   }
 ]
