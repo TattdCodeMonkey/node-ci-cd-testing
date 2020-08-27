@@ -34,6 +34,31 @@ task "test": {
   ]
 }
 
+task "toomuch": {
+  inputs: ["src-git"]
+  outputs: []
+
+  steps: [
+    {
+      name: "test-bigly"
+      image: "node:lts-slim"
+      command: [
+        "/bin/bash", "-c",
+        "npm ci && npm test"
+      ]
+      workingDir: "/workspace/src-git"
+      resources: {
+        requests: {
+          memory: "60Gi"
+        }
+        limits: {
+          memory: "60Gi"
+        }
+      }
+    }
+  ]
+}
+
 actions: [
   {
     tasks: ["test"]
@@ -49,6 +74,12 @@ actions: [
     tasks: ["test"]
     on pull_request: {
       chatops: ["test"]
+    }
+  },
+  {
+    tasks: ["toomuch"]
+    on pull_request: {
+      chatops: ["toomuch"]
     }
   }
 ]
